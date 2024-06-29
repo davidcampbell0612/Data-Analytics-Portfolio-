@@ -1,0 +1,57 @@
+#titanic dataset
+library(data.table)
+library(ggplot2)
+titantic2 
+setDT(titanic2)
+str(titanic2)
+
+unique(titanic2$Pclass)
+titanic2[,Survived:=factor(Survived)]
+titanic2[,Pclass:=factor(Pclass, ordered = T)]
+titanic2[,Sex:=factor(Sex)]
+
+ggplot(titanic2, aes(x=Survived)) + geom_bar()
+
+#theme_ makes it look better
+ggplot(titanic2, aes(x=Survived)) + geom_bar()+theme_bw()+
+  labs(y='Passenger Count', title = 'Titanic Data')
+
+
+ggplot(titanic2, aes(x=Sex, fill=Survived)) + geom_bar()+theme_bw()+
+  labs(y='Passenger Count', title = 'Titanic Data')
+
+ggplot(titanic2, aes(x=Pclass, fill=Survived)) + geom_bar()+theme_bw()+
+  labs(y='Passenger Count', title = 'Titanic Data')
+
+
+#facet_wrap
+
+ggplot(titanic2, aes(x=Sex, fill=Survived)) + geom_bar() + facet_wrap(~Pclass)+
+  theme_bw()+ labs(y='Passenger Count', title = 'Titanic Data')
+
+#extra
+ggplot(titanic2, aes(x=Pclass, fill=Survived)) + geom_bar() + facet_wrap(~Pclass)+
+theme_bw()+ labs(y='Passenger Count', title = 'Titanic Data')
+
+
+#Age distib
+ggplot(titanic2, aes(x=Age, fill=Survived)) + geom_histogram(binwidth = 5)+
+theme_bw() + labs(y='Passenger Count', title = 'Titanic Data')
+
+
+ggplot(titanic2, aes(x=Survived, y=Age)) + geom_boxplot()+
+  theme_bw() + labs(y='Passenger Count', title = 'Titanic Data')
+
+#density curve
+
+ggplot(titanic2, aes(x=Survived, y=Age)) + geom_boxplot()+ facet_wrap(~Pclass)
+  theme_bw() + labs(y='Passenger Count', title = 'Titanic Data')
+  
+  ggplot(titanic2, aes(x=Survived, y=Age)) + geom_boxplot()+ facet_wrap(Sex~Pclass)
+  theme_bw() + labs(y='Passenger Count', title = 'Titanic Data')
+  
+ggplot(titanic2, aes(x=Age, fill=Survived)) + geom_density(alpha=.5)+ facet_wrap(Sex~Pclass)
+  theme_bw() + labs(y='Passenger Count', title = 'Titanic Data')
+  
+ggplot(titanic2 , aes(x=Age , fill=Survived)) + geom_histogram(binwidth = 5) + theme_bw() + facet_wrap(
+    Sex ~ Pclass) + labs(y= 'Passenger Count',x='Age', title = 'Titanic Survival Rates'
