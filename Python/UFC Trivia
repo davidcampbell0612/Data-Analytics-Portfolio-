@@ -1,8 +1,5 @@
-#python final
-
-
-#import from standard lib
 import pandas as pd
+#demonstarting how to create and write in a new file 
 #file i/o
 ofile = open("text", "w")
 ofile.write("Thanks for playing! For your memory, write your name and the date:"
@@ -12,13 +9,11 @@ ofile.close
 data = pd.read_csv("UFCdata.csv")
 print(data)
 
-
 print("Hello! Welcome to the first edition of Fight Night - The Trivia Game")
 
 
 #Linear Search for iterations
 #custom function
-#learned/got idea from homework unit 4
 print("In the Red corner, fighting out of Dagestan, Russia, Petr Yan is about to fight for the Bantamweight Championship of the world. When did this fight take place? ")
 print("Let's perform a linear search for a fighter's most recent fight, in the red corner")
 def linearsearch(fighter, x):
@@ -39,7 +34,6 @@ print("*********************")
 print("In the blue corner, from New Zealand, stands a top contender in Kai Kara-France. What weight division does he fight in?")
 print("Let's perform a linear search for a fighter's most recent fight, in the blue corner")
 
-
 def linearsearch(fighter, x):
     for i in range(len(fighter)):
         if fighter[i] == x:
@@ -57,10 +51,8 @@ print("*********************")
 
 
 
-
 #Guess the location of Yan vs Aljo I
-#got this idea from the homework 1. wayyyy back
-#decision making
+#decision_making
 
 Location = "Las Vegas, NV"
 another_chance = "y"
@@ -76,7 +68,7 @@ while(another_chance == "y"):
             print("Guess again, for kicks.")
             another_chance = input("Want another shot? (answer y or n)")
 
-print("On to the next...")
+print("On to the next question...")
 
 print("**************************")
 
@@ -87,7 +79,6 @@ print("**************************")
 #Classes
 #Functions
 
-
 from finallib import *
 from finallib import explanation
 print(explanation())
@@ -96,11 +87,6 @@ print("\nThe new fighter created \n")
 
 fighter1 = Fighter("Bo Nickal", "Middleweight", "26" "American Top Team")
 print(fighter1.getfighter(),fighter1.getweightclass(), fighter1.getage())#fighter1.getteam())
-
-
-
-
-
 
 
 #anotherquestion
@@ -142,17 +128,6 @@ print ("Here are a list of the greats of the sport, according to you. Thanks for
 print (ds)
 
 
-
-
 #for constant criteria from custom lib
 from finallib import secret_message
 print(secret_message)
-
-#Errors/Comments about my project
-#At random times when I type in a fighter's name/location in correctly, it won't find the data.
-#for the linear search it would've been cool if more statistics would have been shown, maybe I could've done this a different way
-#I wanted to import the linear search function from my library but it didn't work as expected and I wasn't sure where I was going wrong. So I kept it in the program because I liked the idea, but for the fuction from the custom library I did something more simple
-#After I made a function and imported it from my custom library, in the console it says "none" when the function prints and that is unintended
-#My file i/o didn't work as I wanted it to. It still works, but I wanted it to produce something more creative than just a complilation of dates/names of people playing.
-#In proposal it was suggested to use data visualization, but I didn't see with the data given how that would be possible.
-#Hope you enjoyed, thanks for the great semester!
