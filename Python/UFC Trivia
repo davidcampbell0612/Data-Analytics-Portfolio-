@@ -1,5 +1,5 @@
 import pandas as pd
-#demonstarting how to create and write in a new file 
+#demonstrating how to create and write in a new file 
 #file i/o
 ofile = open("text", "w")
 ofile.write("Thanks for playing! For your memory, write your name and the date:"
