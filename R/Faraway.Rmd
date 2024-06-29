@@ -1,0 +1,284 @@
+---
+title: "Faraway"
+output: html_notebook
+---
+```{r}
+library(faraway)
+data("uswages", package = "faraway")
+# ?uswages
+
+```
+
+```{r}
+names(uswages)
+```
+
+Print a taste of the data.
+```{r}
+head(uswages)
+```
+## Data Cleaning
+
+Unusual values.
+```{r}
+summary(uswages)
+```
+Since negative exper is not possible, convert to missing.
+```{r}
+uswages$exper[uswages$exper < 0] <- NA
+```
+
+```{r}
+summary(uswages)
+```
+## Deal with factors
+```{r}
+# convert race, smsa, and pt to factor variables
+uswages$race <- factor(uswages$race)
+levels(uswages$race) <- c("White","Black")
+
+uswages$smsa <- factor(uswages$smsa)
+levels(uswages$smsa) <- c("No","Yes")
+
+uswages$pt <- factor(uswages$pt)
+levels(uswages$pt) <- c("No","Yes")
+```
+
+```{r}
+with(uswages, 
+     race <- factor(race),
+     levels(race) <- c("White", "Black")
+     )
+```
+
+### Convert dummy var to one variable-factor
+
+```{r}
+# create region, a factor variable based on the four regions ne, mw, so, we
+uswages <- data.frame(uswages, 
+                      region = 
+                        1*uswages$ne +
+                        2*uswages$mw +
+                        3*uswages$so +
+                        4*uswages$we
+                      )
+head(uswages)
+uswages$region <- factor(uswages$region)
+levels(uswages$region) <- c("ne","mw","so","we")
+```
+
+```{r}
+# delete the four regions ne, mw, so, we
+uswages <- subset(uswages,select=-c(ne:we))
+# alternative
+# uswages$ne <- NULL
+# uswages$mw <- NULL
+# uswages$so <- NULL
+# uswages$we <- NULL
+```
+
+```{r}
+summary(uswages)
+```
+
+```{r, echo=TRUE, fig.height=2, fig.width=4}
+ggpairs(uswages)
+```
+```{r}
+fit <- lm(wage ~ 
+            educ + 
+            exper + 
+            race, 
+          data=uswages) 
+```
+
+```{r}
+summary(fit)
+```
+```{r}
+lm(wage ~ 
+            educ 
+            , 
+          data=uswages) 
+
+ ggplot(uswages) +
+  aes(x = educ, y = wage) +
+  geom_boxplot()
+```
+```{r}
+coef(fit)
+```
+
+
+```{r}
+
+ ggplot(uswages) + 
+  aes(x = wage) +
+  geom_histogram() 
+
+```
+
+```{r}
+ggplot(uswages) + 
+  aes(x = educ) +
+  geom_histogram() 
+```
+```{r}
+ggplot(uswages) + 
+  aes(x = wage) +
+  geom_dotplot(method="histodot", binwidth = 35) +
+  labs(title = "Dot Plot")
+```
+
+```{r}
+ggplot(uswages) + 
+  aes(x = educ) +
+  geom_dotplot(method="histodot", binwidth = .02) +
+  labs(title = "Dot Plot")
+```
+```{r}
+ggplot(uswages) + 
+  aes(x = educ, y = wage) +
+  geom_point()
+```
+
+```{r}
+fivenum(uswages$educ)
+fivenum(uswages$wage)
+fivenum(uswages$exper)
+```
+
+```{r}
+ggplot(uswages) +
+  aes(x=exper, y=wage, color=educ) +
+  geom_point(alpha=I(1/4)) +
+  geom_smooth(method = "loess", se=FALSE)
+```
+```{r}
+ggplot(uswages) +
+  aes(x=wage, y=exper, color=educ) +
+  geom_point(alpha=I(1/4)) +
+  geom_smooth(method = "loess", se=FALSE)
+```
+
+```{r}
+ggplot(uswages) +
+  aes(x = educ, y = exper) +
+  geom_boxplot()
+```
+
+```{r}
+ggplot(uswages) +
+  aes(x=wage, y=exper, color=educ) +
+  geom_point(alpha=I(1/4)) +
+  geom_smooth(method = "loess", se=FALSE)
+```
+
+```{r}
+uswages$wage[uswages$wage > 3000] <- NA
+```
+
+```{r}
+summary(uswages)
+```
+
+```{r}
+ggplot(uswages) +
+  aes(x=wage, y=exper, color=educ) +
+  geom_point(alpha=I(1/4)) +
+  geom_smooth(method = "loess", se=FALSE)
+```
+
+#with "new" data
+```{r}
+fit2 <- lm(wage ~ 
+            educ + 
+            exper ,
+          data=uswages)
+```
+
+```{r}
+summary(fit2)
+```
+```{r, echo=TRUE, fig.height=2, fig.width=4}
+ggpairs(uswages)
+
+```
+```{r}
+ggplot(uswages) + 
+  aes(x = wage, y = exper) +
+  geom_point() +
+  labs(x = "wage",
+  y="exper")
+  title = "New data wages and exper" + 
+   geom_smooth(method = "lm", 
+                  se=FALSE, 
+                  color = "red")
+
+```
+
+```{r}
+ggplot(uswages) +
+  aes(x=wage, y=exper, color=educ) +
+  geom_point(alpha=I(1/4)) +
+  geom_smooth(method = "loess", se=FALSE)
+```
+
+```{r}
+ggplot(uswages) +
+  aes(x=educ, y=wage, color=exper) +
+  geom_point(alpha=I(1/4)) +
+  geom_smooth(method = "loess", se=FALSE)
+```
+
+FOR model
+
+- remove outliers from wages, make sure there are no negative numbers, also make sure there are no data points below $100 per week (maybe- might correct itself if we remove parttime)
+
+- should try to compare a model with and without partime
+
+- for other catagorical variables - just make sure there are no missing numbers.
+
+Model - predict wages (y)   the model basicallys that wages = intercept + Cofecient(experience) + Cofecient(education) .....+ Cofecient(region)
+
+
+
+```{r}
+
+```
+
+
+```{r}
+ lm(wage ~ 
+            educ + 
+            exper +
+            pt <1
+             ,
+          data=uswages)
+```
+Data with no wage outliers 
+
+```{r}
+uswages$wage[uswages$wage < 100] <- NA
+```
+
+```{r}
+summary(uswages)
+```
+```{r}
+fit3 <- lm(wage ~ 
+            educ + 
+            exper ,
+          data=uswages)
+```
+
+```{r}
+summary(fit3)
+```
+```{r}
+ggplot(uswages) +
+  aes(x=wage, y=exper, color=educ) +
+  geom_point(alpha=I(1/4)) +
+  geom_smooth(method = "loess", se=FALSE)
+```
+
